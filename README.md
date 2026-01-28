@@ -42,15 +42,15 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from 'eslint-plugin-react-x';
+import reactDom from 'eslint-plugin-react-dom';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -71,10 +71,19 @@ export default defineConfig([
       // other options...
     },
   },
-])
+]);
 ```
+
+## ✨ Application Screenshots
+
+### 🏠 Home Page - AI-Powered Hotel Recommendations
+
+Experience intelligent hotel discovery with our AI-powered recommendation engine. Simply describe your travel preferences in natural language, and watch as our advanced AI analyzes your needs to suggest the perfect hotel match. The elegant interface features a comprehensive hotel catalog below, allowing you to browse all available properties with beautiful cards showcasing ratings, pricing, and key details.
 
 <img width="1932" height="1726" alt="image" src="https://github.com/user-attachments/assets/7058839b-fc23-4582-8a2b-e859809afd99" />
 
-<img width="1895" height="1811" alt="image" src="https://github.com/user-attachments/assets/4cffa75e-8a14-4201-aa5a-5a3666f38176" />
+### 🏨 Hotel Details - Immersive Booking Experience
 
+Dive into a stunning hotel details page designed for conversions. The sophisticated two-column layout presents comprehensive hotel information alongside a prominent booking card with transparent pricing. Users can interact with our AI assistant to ask specific questions about amenities, policies, and services. The streamlined booking form captures leads efficiently with a beautiful modal interface, complete with date selection, guest count, and instant confirmation messaging.
+
+<img width="1895" height="1811" alt="image" src="https://github.com/user-attachments/assets/4cffa75e-8a14-4201-aa5a-5a3666f38176" />
