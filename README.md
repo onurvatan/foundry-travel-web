@@ -80,10 +80,13 @@ export default defineConfig([
 
 Experience intelligent hotel discovery with our AI-powered recommendation engine. Simply describe your travel preferences in natural language, and watch as our advanced AI analyzes your needs to suggest the perfect hotel match. The elegant interface features a comprehensive hotel catalog below, allowing you to browse all available properties with beautiful cards showcasing ratings, pricing, and key details.
 
-<img width="1932" height="1726" alt="image" src="https://github.com/user-attachments/assets/7058839b-fc23-4582-8a2b-e859809afd99" />
+<img width="2026" height="1932" alt="image" src="https://github.com/user-attachments/assets/971b2288-4daa-4814-be35-fe7cdff6d845" />
+
 
 ### 🏨 Hotel Details - Immersive Booking Experience
 
 Dive into a stunning hotel details page designed for conversions. The sophisticated two-column layout presents comprehensive hotel information alongside a prominent booking card with transparent pricing. Users can interact with our AI assistant to ask specific questions about amenities, policies, and services. The streamlined booking form captures leads efficiently with a beautiful modal interface, complete with date selection, guest count, and instant confirmation messaging.
 
-<img width="1895" height="1811" alt="image" src="https://github.com/user-attachments/assets/4cffa75e-8a14-4201-aa5a-5a3666f38176" />
+<img width="1932" height="1957" alt="image" src="https://github.com/user-attachments/assets/b05cd0de-34c1-4d98-8f94-51f64b6b1f98" />
+
+
