@@ -16,36 +16,56 @@ export default function Home() {
   });
 
   return (
-    <div>
-      <h1>Natural Language Hotel Search</h1>
+    <div className="page-container">
+      <div className="search-section">
+        <h1 className="page-title">Find Your Perfect Stay</h1>
+        <p className="page-subtitle">
+          Use natural language to search for hotels that match your needs
+        </p>
 
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="e.g. 4-star hotel in Paris under 200 EUR"
-        style={{ width: '100%', padding: '0.5rem', marginTop: '1rem' }}
-      />
+        <div className="search-box">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="e.g. 4-star hotel in Paris under 200 EUR"
+            className="search-input"
+            onKeyPress={(e) => e.key === 'Enter' && search.mutate()}
+          />
+          <button
+            onClick={() => search.mutate()}
+            className="search-button"
+            disabled={!query.trim() || search.isPending}
+          >
+            {search.isPending ? '🔄 Searching...' : '🔍 Search'}
+          </button>
+        </div>
 
-      <button
-        onClick={() => search.mutate()}
-        style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
-      >
-        Search
-      </button>
+        {search.data && (
+          <div className="search-results">
+            <h3>Search Results:</h3>
+            <pre className="result-pre">
+              {JSON.stringify(search.data, null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
 
-      {search.data && (
-        <pre style={{ marginTop: '1rem' }}>
-          {JSON.stringify(search.data, null, 2)}
-        </pre>
-      )}
+      <div className="hotels-section">
+        <h2 className="section-title">All Available Hotels</h2>
 
-      <h2 style={{ marginTop: '2rem' }}>All Hotels</h2>
+        {hotelsQuery.isLoading && (
+          <div className="loading-state">
+            <div className="spinner"></div>
+            <p>Loading hotels...</p>
+          </div>
+        )}
 
-      {hotelsQuery.isLoading && <p>Loading hotels...</p>}
-
-      {hotelsQuery.data?.map((hotel) => (
-        <HotelCard key={hotel.id} hotel={hotel} />
-      ))}
+        <div className="hotels-grid">
+          {hotelsQuery.data?.map((hotel) => (
+            <HotelCard key={hotel.id} hotel={hotel} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
