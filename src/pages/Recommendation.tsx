@@ -1,13 +1,38 @@
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { aiRecommend } from '../api/hotels';
+import { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { aiRecommend, getHotel } from '../api/hotels';
+import { HotelCard } from '../components/HotelCard';
 
 export default function Recommendation() {
   const [prefs, setPrefs] = useState('');
+  const [hotelId, setHotelId] = useState<string | null>(null);
+  const [reason, setReason] = useState<string>('');
 
   const recommend = useMutation({
     mutationFn: () => aiRecommend(prefs),
+    onSuccess: (data) => {
+      // Handle the AI response which contains hotelId and reason
+      if (data?.hotelId) {
+        setHotelId(data.hotelId);
+        setReason(data.reason || '');
+      }
+    },
   });
+
+  // Fetch the actual hotel data when we have a hotelId
+  const { data: hotel, isLoading: isLoadingHotel } = useQuery({
+    queryKey: ['hotel', hotelId],
+    queryFn: () => getHotel(hotelId!),
+    enabled: !!hotelId,
+  });
+
+  // Reset hotel when starting a new recommendation
+  useEffect(() => {
+    if (recommend.isPending) {
+      setHotelId(null);
+      setReason('');
+    }
+  }, [recommend.isPending]);
 
   return (
     <div className="page-container">
@@ -34,12 +59,32 @@ export default function Recommendation() {
           </button>
         </div>
 
-        {recommend.data && (
+        {(hotel || isLoadingHotel) && (
           <div className="recommendation-results">
-            <h3>AI Recommendations:</h3>
-            <pre className="result-pre">
-              {JSON.stringify(recommend.data, null, 2)}
-            </pre>
+            {isLoadingHotel ? (
+              <div className="loading-state">
+                <p>Loading hotel details...</p>
+              </div>
+            ) : hotel ? (
+              <>
+                <h3 className="results-title">We Recommend:</h3>
+                {reason && (
+                  <div className="recommendation-reason">
+                    <strong>Why this hotel?</strong>
+                    <p>{reason}</p>
+                  </div>
+                )}
+                <div className="hotels-grid">
+                  <HotelCard hotel={hotel} />
+                </div>
+              </>
+            ) : null}
+          </div>
+        )}
+
+        {recommend.isError && (
+          <div className="error-state">
+            <p>Something went wrong. Please try again.</p>
           </div>
         )}
       </div>

@@ -2,17 +2,17 @@ import type { Hotel } from '../types/Hotel';
 import { api } from './client';
 
 export const aiSearch = async (query: string) => {
-  const res = await api.post('/ai/search', { query });
+  const res = await api.post('/ai/search', JSON.stringify(query));
   return res.data;
 };
 
 export const aiRecommend = async (preferences: string) => {
-  const res = await api.post('/ai/recommend', { preferences });
+  const res = await api.post('/ai/recommend', JSON.stringify(preferences));
   return res.data;
 };
 
 export const askHotelFaq = async (hotelId: string, question: string) => {
-  const res = await api.post(`/ai/hotel/${hotelId}/faq`, { question });
+  const res = await api.post(`/ai/faq/${hotelId}`, JSON.stringify(question));
   return res.data;
 };
 

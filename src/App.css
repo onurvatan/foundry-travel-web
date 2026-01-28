@@ -39,6 +39,12 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.app-title:hover {
+  transform: scale(1.05);
 }
 
 .app-nav {
@@ -53,6 +59,7 @@
   transition: all 0.3s ease;
   text-decoration: none;
   color: #4a5568;
+  cursor: pointer;
 }
 
 .nav-link:hover {

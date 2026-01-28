@@ -1,14 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { aiSearch, getHotels } from '../api/hotels';
+import { aiRecommend, getHotel, getHotels } from '../api/hotels';
 import { HotelCard } from '../components/HotelCard';
 
 export default function Home() {
-  const [query, setQuery] = useState('');
+  const [prefs, setPrefs] = useState('');
+  const [hotelId, setHotelId] = useState<string | null>(null);
+  const [reason, setReason] = useState<string>('');
 
-  const search = useMutation({
-    mutationFn: () => aiSearch(query),
+  const recommend = useMutation({
+    mutationFn: () => aiRecommend(prefs),
+    onSuccess: (data) => {
+      if (data?.hotelId) {
+        setHotelId(data.hotelId);
+        setReason(data.reason || '');
+      }
+    },
   });
+
+  const { data: recommendedHotel, isLoading: isLoadingHotel } = useQuery({
+    queryKey: ['hotel', hotelId],
+    queryFn: () => getHotel(hotelId!),
+    enabled: !!hotelId,
+  });
+
+  useEffect(() => {
+    if (recommend.isPending) {
+      setHotelId(null);
+      setReason('');
+    }
+  }, [recommend.isPending]);
 
   const hotelsQuery = useQuery({
     queryKey: ['hotels'],
@@ -17,35 +38,58 @@ export default function Home() {
 
   return (
     <div className="page-container">
-      <div className="search-section">
-        <h1 className="page-title">Find Your Perfect Stay</h1>
+      <div className="recommendation-section">
+        <h1 className="page-title">AI-Powered Hotel Recommendations</h1>
         <p className="page-subtitle">
-          Use natural language to search for hotels that match your needs
+          Tell us about your travel preferences and let AI find the perfect
+          hotel for you
         </p>
 
-        <div className="search-box">
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="e.g. 4-star hotel in Paris under 200 EUR"
-            className="search-input"
-            onKeyPress={(e) => e.key === 'Enter' && search.mutate()}
+        <div className="preference-box">
+          <textarea
+            value={prefs}
+            onChange={(e) => setPrefs(e.target.value)}
+            placeholder="Describe your preferences... e.g., I want a romantic getaway in a quiet location with spa facilities and ocean views. Budget is flexible."
+            className="preference-input"
+            onKeyPress={(e) =>
+              e.key === 'Enter' && !e.shiftKey && recommend.mutate()
+            }
           />
           <button
-            onClick={() => search.mutate()}
-            className="search-button"
-            disabled={!query.trim() || search.isPending}
+            onClick={() => recommend.mutate()}
+            className="recommend-button"
+            disabled={!prefs.trim() || recommend.isPending}
           >
-            {search.isPending ? '🔄 Searching...' : '🔍 Search'}
+            {recommend.isPending ? '🤔 Thinking...' : '✨ Get Recommendations'}
           </button>
         </div>
 
-        {search.data && (
-          <div className="search-results">
-            <h3>Search Results:</h3>
-            <pre className="result-pre">
-              {JSON.stringify(search.data, null, 2)}
-            </pre>
+        {(recommendedHotel || isLoadingHotel) && (
+          <div className="recommendation-results">
+            {isLoadingHotel ? (
+              <div className="loading-state">
+                <p>Loading hotel details...</p>
+              </div>
+            ) : recommendedHotel ? (
+              <>
+                <h3 className="results-title">We Recommend:</h3>
+                {reason && (
+                  <div className="recommendation-reason">
+                    <strong>Why this hotel?</strong>
+                    <p>{reason}</p>
+                  </div>
+                )}
+                <div className="hotels-grid">
+                  <HotelCard hotel={recommendedHotel} />
+                </div>
+              </>
+            ) : null}
+          </div>
+        )}
+
+        {recommend.isError && (
+          <div className="error-state">
+            <p>Something went wrong. Please try again.</p>
           </div>
         )}
       </div>

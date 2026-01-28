@@ -11,19 +11,15 @@ export default function App() {
     <div className="app-container">
       <header className="app-header">
         <div className="header-content">
-          <h1 className="app-title">🏨 Travel Finder</h1>
+          <Link to="/" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+            <h1 className="app-title">🏨 Foundry Travel</h1>
+          </Link>
           <nav className="app-nav">
             <Link
               to="/"
               className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
             >
-              🔍 Search
-            </Link>
-            <Link
-              to="/recommendation"
-              className={`nav-link ${location.pathname === '/recommendation' ? 'active' : ''}`}
-            >
-              ✨ AI Recommendation
+              🏠 Home
             </Link>
           </nav>
         </div>

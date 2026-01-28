@@ -14,6 +14,10 @@
   box-sizing: border-box;
 }
 
+a {
+  cursor: pointer;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -177,6 +181,14 @@ body {
   margin: 0 0 1rem 0;
   color: #2d3748;
   font-size: 1.2rem;
+}
+
+.results-title {
+  margin: 0 0 1.5rem 0 !important;
+  color: #2d3748;
+  font-size: 1.5rem !important;
+  font-weight: 600;
+  text-align: center;
 }
 
 .result-pre {
